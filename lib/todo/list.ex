@@ -29,6 +29,18 @@ defmodule Todo.List do
     |> Enum.filter(fn entry -> entry.date == date end)
   end
 
+  def update(list, id, updater) do
+    case Map.fetch(list.entries, id) do
+      :error ->
+        list
+
+      {:ok, old_entry} ->
+        new_entry = updater.(old_entry)
+        new_entries = Map.put(list.entries, new_entry.id, new_entry)
+        %Todo.List{list | entries: new_entries}
+    end
+  end
+
   def delete(list, id) do
     Map.update!(list, :entries, fn entries ->
       Map.delete(entries, id)

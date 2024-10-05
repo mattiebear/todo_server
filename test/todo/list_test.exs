@@ -19,22 +19,36 @@ defmodule Todo.ListTest do
 
   test "adds an entry to the list" do
     item = Todo.Item.new(~D[2024-10-01], "Go swimming")
-    list = Todo.List.add(Todo.List.new(), item)
+    list = Todo.List.new([item])
 
     assert Enum.count(list.entries) == 1
   end
 
   test "fetches a specific entry by id" do
     item = Todo.Item.new(~D[2024-10-01], "Go swimming")
-    list = Todo.List.add(Todo.List.new(), item)
+    list = Todo.List.new([item])
 
     entry = Todo.List.get(list, 1)
     assert entry.text == "Go swimming"
   end
 
+  test "updates an entry" do
+    item = Todo.Item.new(~D[2024-10-01], "Go swimming")
+    list = Todo.List.new([item])
+    list = Todo.List.update(list, 1, fn entry -> %Todo.Item{entry | text: "Eat cake"} end)
+
+    assert Todo.List.get(list, 1).text == "Eat cake"
+  end
+
+  test "does not update a nonexistent entry" do
+    list = Todo.List.new() |> Todo.List.update(1, fn entry -> entry end)
+
+    assert %Todo.List{entries: %{}} = list
+  end
+
   test "returns all entries" do
     item = Todo.Item.new(~D[2024-10-01], "Go swimming")
-    list = Todo.List.add(Todo.List.new(), item)
+    list = Todo.List.new([item])
 
     assert Todo.List.all(list) |> length() == 1
   end
@@ -51,7 +65,7 @@ defmodule Todo.ListTest do
 
   test "deletes an entry from the list" do
     item = Todo.Item.new(~D[2024-10-01], "Go swimming")
-    list = Todo.List.add(Todo.List.new(), item)
+    list = Todo.List.new([item])
     list = Todo.List.delete(list, 1)
 
     assert Todo.List.get(list, 1) == nil
@@ -59,7 +73,7 @@ defmodule Todo.ListTest do
 
   test "completes an entry" do
     item = Todo.Item.new(~D[2024-10-01], "Go swimming")
-    list = Todo.List.add(Todo.List.new(), item)
+    list = Todo.List.new([item])
     list = Todo.List.complete(list, 1)
     entry = Todo.List.get(list, 1)
 
