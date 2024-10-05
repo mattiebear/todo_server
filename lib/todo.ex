@@ -1,18 +1,5 @@
 defmodule Todo do
   @moduledoc """
-  Documentation for `Todo`.
+  This will have something, maybe
   """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Todo.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end
