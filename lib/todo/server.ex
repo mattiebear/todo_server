@@ -1,8 +1,8 @@
 defmodule Todo.Server do
   use GenServer
 
-  def start(db_name) do
-    GenServer.start(__MODULE__, db_name)
+  def start_link(db_name) do
+    GenServer.start_link(__MODULE__, db_name)
   end
 
   def add(server, item) do
