@@ -23,7 +23,7 @@ defmodule Todo.Cache do
         {:reply, server, servers}
 
       :error ->
-        {:ok, server} = Todo.Server.start(name)
+        {:ok, server} = Todo.Server.start_link(name)
         {:reply, server, Map.put(servers, name, server)}
     end
   end
