@@ -12,6 +12,11 @@ defmodule Todo.Server do
     GenServer.cast(server, {:add, item})
   end
 
+  def create(server, date, text) do
+    item = Todo.Item.new(date, text)
+    GenServer.cast(server, {:add, item})
+  end
+
   def fetch(server, date) do
     GenServer.call(server, {:fetch, date})
   end
